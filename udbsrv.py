@@ -1,13 +1,12 @@
 import socket
-import select
-from threading import Thread
+
+
 ack = "ACK"
-sentAck = "dummyack,kjk, 56"
+sentAck = "koko,0,ACK"
 serverPort = 12000
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 serverSocket.bind(('', serverPort))
 print("the server is ready  ")
-#k = receive()
 serverSocket.settimeout(10)
 
 
@@ -28,7 +27,7 @@ def isACK(packet):
     global seqSnd
     packet = packet.decode("UTF-8")
     arr = packet.split(",")
-    if arr[2] == "ACK" and arr[1] == seqSnd:
+    if arr[2] == "ACK" and int(arr[1]) == seqSnd:
         return 1
     else:
         return 0
@@ -38,7 +37,7 @@ def verifySeq(packet):
     global seqRcvd
     packet = packet.decode("UTF-8")
     arr = packet.split(",")
-    if arr[1] == seqRcvd:
+    if int(arr[1])== seqRcvd:
         return 1
     else:
         return 0
@@ -48,8 +47,10 @@ def receive():
     global sentAck
     global seqRcvd
     data, clientAddress = serverSocket.recvfrom(2048)
+    print("packet received: " + data.decode("UTF-8"))
     if (verifyCheckSum(data) and verifySeq(data)):
         sentAck = createPacket(ack, seqRcvd)
+        print("ACK Packet to send : " + sentAck)
         serverSocket.sendto(sentAck.encode('UTF-8'), clientAddress)
         data = data.decode("UTF-8")
         arr = data.split(",")
@@ -60,30 +61,33 @@ def receive():
 
 
 def sendPacket(packet, clientAddress):
-    global ack
     global seqSnd
     try:
+        print("Packet to send as a response : " + packet)
         serverSocket.sendto(packet.encode('UTF-8'), clientAddress)
         ack = serverSocket.recv(2048)
+        print("ACK received: " + ack.decode('UTF-8'))
         if not (verifyCheckSum(ack) and isACK(ack)):
             ack = serverSocket.recv(2048)
         else:
             seqSnd = 1 - seqSnd
     except socket.timeout:
-        sendPacket(packet)
+        sendPacket(packet, clientAddress)
 
 
 def getCheckSum(data):
-    return "koko";
+    return "koko"
 
 
 def createPacket(data, seq):
-    checkSum = getCheckSum(data);
-    packet = checkSum + ',' + str(seq) + ',' + data
-    return packet;
+    checkSum = getCheckSum(data)
+    packet = checkSum + ',' + str(seq) + ',' + str(data)
+    return packet
 
 
 while 1:
     k, clientAddress = receive()
-    print(k)
-    sendPacket(createPacket(k.upper(), seqSnd), clientAddress)
+    print("data from the packet : " + k)
+    packet_to_send = createPacket(k.upper(), seqSnd)
+    sendPacket(packet_to_send, clientAddress)
+    print("---------------------------------")
