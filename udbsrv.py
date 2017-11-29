@@ -1,18 +1,16 @@
 import socket
+
+ack = "ACK"
+sentAck = "koko,0,ACK"
+serverPort = 12000
+serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+serverSocket.bind(('', serverPort))
+print("the server is ready  ")
+seqSnd = 0
+seqRcvd = 0
 while 1:
     try:
-        ack = "ACK"
-        sentAck = "koko,0,ACK"
-        serverPort = 12000
-        serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        serverSocket.bind(('', serverPort))
-        print("the server is ready  ")
         serverSocket.settimeout(10)
-
-
-        seqSnd = 0
-        seqRcvd = 0
-
 
         def verifyCheckSum(packet):
             packet = packet.decode("UTF-8")
@@ -55,6 +53,7 @@ while 1:
                 data = data.decode("UTF-8")
                 arr = data.split(",")
                 seqRcvd=1-seqRcvd
+                #print (seqRcvd)
                 return arr[2], clientAddress
             serverSocket.sendto(sentAck.encode('UTF-8'), clientAddress)
             return receive()
