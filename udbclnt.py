@@ -32,7 +32,7 @@ def verifySeq(packet):
     global seqRcvd
     packet = packet.decode("UTF-8")
     arr = packet.split(",")
-    if int(arr[1])== seqRcvd:
+    if int(arr[1]) == seqRcvd:
         return 1
     else:
         return 0
@@ -49,7 +49,7 @@ def receive():
         clientSocket.sendto(sentAck.encode('UTF-8'), (serverName, serverPort))
         data = data.decode("UTF-8")
         arr = data.split(",")
-        seqRcvd=1-seqRcvd
+        seqRcvd = 1 - seqRcvd
         return arr[2]
     clientSocket.sendto(sentAck.encode('UTF-8'), (serverName, serverPort))
     return receive()
@@ -89,4 +89,3 @@ while 1:
     k = receive()
     print("data recived : " + k)
     print("---------------------------------")
-
