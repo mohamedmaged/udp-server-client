@@ -92,4 +92,4 @@ while 1:
             sendPacket(packet_to_send, clientAddress)
             print("---------------------------------")
     except socket.timeout:
-        print("caught a timeout")
+        print(" ")
