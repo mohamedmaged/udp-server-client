@@ -3,7 +3,7 @@ import socket
 serverName = 'localhost'
 serverPort = 12000
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-clientSocket.settimeout(10)
+clientSocket.settimeout(0.2)
 sentAck = "koko,0,ACK"
 
 seqSnd = 0
