@@ -3,16 +3,10 @@ import socket
 serverName = 'localhost'
 serverPort = 12000
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-<<<<<<< HEAD
 clientSocket.settimeout(10)
 sentAck = "0,ACK"
-||||||| merged common ancestors
-clientSocket.settimeout(10)
-sentAck = "koko,0,ACK"
-=======
+
 clientSocket.settimeout(0.2)
-sentAck = "koko,0,ACK"
->>>>>>> 12373e04cb9523ed1bb0eafa008962e07a2c81b5
 
 seqSnd = 0
 seqRcvd = 0
