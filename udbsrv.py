@@ -10,7 +10,7 @@ seqSnd = 0
 seqRcvd = 0
 while 1:
     try:
-        serverSocket.settimeout(10)
+        serverSocket.settimeout(0.2)
 
 
         def isACK(packet):
@@ -82,4 +82,5 @@ while 1:
             sendPacket(packet_to_send, clientAddress)
             print("---------------------------------")
     except socket.timeout:
-        print(" ")
+        x=1
+        #print(" ")
