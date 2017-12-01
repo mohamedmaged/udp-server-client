@@ -75,10 +75,14 @@ def createPacket(data, seq):
 
 
 while 1:
-    k = input("Enter data to be sent : ")
-    packet_to_send = createPacket(k, seqSnd)
-    sendPacket(packet_to_send)
-    print("Receiving....")
-    k = receive()
-    print("data recived : " + k)
-    print("---------------------------------")
+    try:
+
+        k = input("Enter data to be sent : ")
+        packet_to_send = createPacket(k, seqSnd)
+        sendPacket(packet_to_send)
+        print("Receiving....")
+        k = receive()
+        print("data recived : " + k)
+        print("---------------------------------")
+    except socket.error as exc:
+        print("Server isn't working")
