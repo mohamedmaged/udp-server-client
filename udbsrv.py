@@ -45,7 +45,6 @@ while 1:
                 data = data.decode("UTF-8")
                 arr = data.split(",")
                 seqRcvd = 1 - seqRcvd
-                # print (seqRcvd)
                 return arr[1], clientAddress
             serverSocket.sendto(sentAck.encode('UTF-8'), clientAddress)
             return receive()
@@ -83,4 +82,3 @@ while 1:
             print("---------------------------------")
     except socket.timeout:
         x=1
-        #print(" ")
